@@ -1,7 +1,7 @@
-<?php 
+<?php
   session_start();
   if (!isset($_SESSION['user_id'])) {
-      header('Location: login.php');
+      header('Location: index.php');
       exit;
   }
 ?>
@@ -332,7 +332,7 @@
         <button type="submit" class="login-submit"><span class="traslate">ACCEDI</span></button>
       </form>
       <div class="signup-link">
-        Non hai un account? <a href="#">Registrati</a>
+        Non hai un account? <a href="./signup.php">Registrati</a>
       </div>
     </div>
   </div>
