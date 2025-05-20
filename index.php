@@ -1,10 +1,18 @@
+<?php 
+  session_start();
+  if (!isset($_SESSION['user_id'])) {
+      header('Location: login.php');
+      exit;
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="hw1.css">
-  <script src="./hw1.js" defer></script>
+  <script src="hw1.js" defer></script>
 
   <title>Bershka Uomo | Novità e Tendenze 2025</title>
 </head>
@@ -71,11 +79,11 @@
       </div>
 
       <div id="logo">
-          <img src="../mhw1/img/Bershka-Logo.png" alt="Bershka logo">
+          <img src="./img/Bershka-Logo.png" alt="Bershka logo">
       </div> 
       <div id="linksRIGHT">
         <div class="search-container">
-          <img src="../mhw1/img/54481.png" alt="Search" class="search-icon"><span id="search-text">CERCA</span>
+          <img src="./img/54481.png" alt="Search" class="search-icon"><span id="search-text">CERCA</span>
         </div>
           <a>Accedi</a>
           <a>Carrello</a>
@@ -108,7 +116,7 @@
     <section>
       <div class="box-slideshow">
         <div class="slideshow-container"> <!-- Inserisci le altre immagini --> 
-          <img src="../mhw1/img/1D_slide_man_newin_-1.jpg" alt="Promo 3" class="box-image">
+          <img src="./img/1D_slide_man_newin_-1.jpg" alt="Promo 3" class="box-image">
         </div>  
         <div class="box-text">
           <h1>novità</h1>
@@ -118,32 +126,32 @@
         <div class="flex-container">
           <div class="product-grid">
             <div class="product-item">
-                <img src="../mhw1/img/1tshirt.jpg" alt="Prodotto 1">
+                <img src="./img/1tshirt.jpg" alt="Prodotto 1">
                 <div class="product-text">Magliette</div>
             </div>
             <div class="product-item">
-                <img src="../mhw1/img/2trouser.jpg" alt="Prodotto 2">
+                <img src="./img/2trouser.jpg" alt="Prodotto 2">
                 <div class="product-text">Pantaloni</div>
             </div>
             <div class="product-item">
-                <img src="../mhw1/img/3knitwear.jpg" alt="Prodotto 3">
+                <img src="./img/3knitwear.jpg" alt="Prodotto 3">
                 <div class="product-text">Felpe</div>
             </div>
             <div class="product-item">    
-                <img src="../mhw1/img/4shorts.jpg" alt="Prodotto 4">
+                <img src="./img/4shorts.jpg" alt="Prodotto 4">
                 <div class="product-text">Bermuda</div>
             </div>
             <div class="product-item">
-                <img src="../mhw1/img/5tracksuit.jpg" alt="Prodotto 5">
+                <img src="./img/5tracksuit.jpg" alt="Prodotto 5">
                 <div class="product-text">Tuta</div>
             </div>
             <div class="product-item">
-                <img src="../mhw1/img/6shoes.jpg" alt="Prodotto 6">
+                <img src="./img/6shoes.jpg" alt="Prodotto 6">
                 <div class="product-text">Scarpe</div>
             </div>
           </div>
           <div class="slide_container">
-            <img src="../mhw1/img/outofcore.jpg" alt="Out of Core" class="outofcore-img">
+            <img src="./img/outofcore.jpg" alt="Out of Core" class="outofcore-img">
             <div class="text_wrapper">
               <p>NEW FOOTWEAR BRAND BY RAL7000STUDIO</p>
               <h2>Out of Core</h2>
@@ -269,14 +277,14 @@
           <div class="footer-column social">
             <h3>Seguici su</h3>
             <div class="social-icons">
-              <a href="#"><img src="../mhw1/img/instagram.svg"><i class="fab fa-instagram"></i></a>
-              <a href="#"><img src="../mhw1/img/facebook.svg"><i class="fab fa-facebook"></i></a>
-              <a href="#"><img src="../mhw1/img/twitter.svg"><i class="fab fa-twitter"></i></a>
-              <a href="#"><img src="../mhw1/img/tiktok.svg"><i class="fab fa-tiktok"></i></a>
-              <a href="#"><img src="../mhw1/img/snapchat.svg"><i class="fab fa-snapchat"></i></a>
-              <a href="#"><img src="../mhw1/img/youtube.svg"><i class="fab fa-youtube"></i></a>
-              <a href="#"><img src="../mhw1/img/pinterest.svg"><i class="fab fa-pinterest"></i></a>
-              <a href="#"><img src="../mhw1/img/spotify.svg"><i class="fab fa-spotify"></i></a>
+              <a href="#"><img src="./img/instagram.svg"><i class="fab fa-instagram"></i></a>
+              <a href="#"><img src="./img/facebook.svg"><i class="fab fa-facebook"></i></a>
+              <a href="#"><img src="./img/twitter.svg"><i class="fab fa-twitter"></i></a>
+              <a href="#"><img src="./img/tiktok.svg"><i class="fab fa-tiktok"></i></a>
+              <a href="#"><img src="./img/snapchat.svg"><i class="fab fa-snapchat"></i></a>
+              <a href="#"><img src="./img/youtube.svg"><i class="fab fa-youtube"></i></a>
+              <a href="#"><img src="./img/pinterest.svg"><i class="fab fa-pinterest"></i></a>
+              <a href="#"><img src="./img/spotify.svg"><i class="fab fa-spotify"></i></a>
             </div>
           </div>
         </div>
@@ -291,12 +299,12 @@
   <div id="login-modal" class="modal hidden">
     <div class="modal-content">
       <button class="close-btn-log">&times;</button>
-      <img src="img/login-art.png" alt="Login Art" class="modal-img" />
+      <img src="./img/login-art.png" alt="Login Art" class="modal-img" />
   
       <h2 class="modal-title">Accedi o crea il tuo account</h2>
   
       <button class="facebook-btn">
-        <img src="img/facebook-login-icon.png" alt="Facebook" class="facebook-icon" />
+        <img src="./img/facebook-login-icon.png" alt="Facebook" class="facebook-icon" />
         <span id="facebook-access">CONTINUA CON FACEBOOK</span>
       </button>
   
@@ -443,7 +451,7 @@
   <!-- SEARCH BAR -->
   <div id="search-page">
     <div class="search-container-page">
-      <img src="../mhw1/img/54481.png" alt="Search" class="search-icon">
+      <img src="./img/54481.png" alt="Search" class="search-icon">
       <input type="text" placeholder="CERCA" class="search-input-page">
     </div>
     <div class="top-search">
