@@ -308,14 +308,13 @@
         <hr><span>o</span><hr>
       </div>
       <form name="login" method="post">
-        <label for="email">E-mail</label>
-        <input type="email" id="email" placeholder="E-mail"/>
+        <label for="login-email">E-mail</label>
+        <input type="email" id="login-email" placeholder="E-mail"/>
   
-        <label for="password">Password</label>
-        <div class="password-container">
-          <input type="password" id="password" placeholder="Password" />
-        </div>
-  
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" placeholder="Password" />
+
+
         <div class="login-options">
           <label><input type="checkbox"/><span class="traslate">Mantieni attiva la sessione</span></label>
           <a class = "traslate">Hai dimenticato la password?</a>
@@ -335,18 +334,21 @@
 
       <h2 class="modal-title">Crea account</h2>
 
-      <form method="POST" action="register.php"> <!-- non devo mettere action.php se rimango nella stessa pagina-->
+      <form method="POST" action=""> 
 
+        <label for="nome">Nome</label>
+        <input type="text" name="name" placeholder="Nome" required />
+        
         <label for="email">E-mail</label>
         <input type="email" name="email" placeholder="E-mail" required />
         
         <label for="password">Password</label>
         <input type="password" name="password" placeholder="Password" required />
 
-        <label for="telefono">Telefono</label>
-        <input type="tel" name="phone" placeholder="Telefono" required />
+        <label for="password">Conferma Password</label>
+        <input type="password" name="confirm_password" placeholder="Conferma Password" required />
 
-        <div class="login-options">
+        <div class="login-options"> 
           <label><input type="checkbox"/><span class="traslate">Mantieni attiva la sessione</span></label>
           <a class = "traslate">Hai dimenticato la password?</a>
         </div>
@@ -588,3 +590,107 @@
   </div>
 </body>
 </html>
+
+<!-- PHP per la registrazione -->
+<?php
+    require_once 'auth.php';
+    require_once 'dbconfig.php'; // contiene $dbconfig
+
+    if (checkAuth()) {
+        header("Location: home.php");
+        exit;
+    }   
+
+    // Verifica l'esistenza di dati POST
+    if (!empty($_POST["name"]) && !empty($_POST["email"]) && !empty($_POST["password"]) && !empty($_POST["confirm_password"]) && !empty($_POST["privacy"]))
+    {
+        $error = array();
+        $conn = mysqli_connect($dbconfig['host'], $dbconfig['user'], $dbconfig['password'], $dbconfig['name']) or die(mysqli_error($conn));
+
+        // PASSWORD: lunghezza minima
+        if (strlen($_POST["password"]) < 8) {
+            $error[] = "Caratteri password insufficienti";
+        } 
+
+        // CONFERMA PASSWORD
+        if ($_POST["password"] !== $_POST["confirm_password"]) {
+            $error[] = "Le password non coincidono";
+        }
+
+        // EMAIL
+        if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+            $error[] = "Email non valida";
+        } else {
+            $email = mysqli_real_escape_string($conn, strtolower($_POST['email']));
+            $res = mysqli_query($conn, "SELECT email FROM users WHERE email = '$email'");
+            if (mysqli_num_rows($res) > 0) {
+                $error[] = "Email già utilizzata";
+            }
+        }
+
+        // REGISTRAZIONE NEL DATABASE
+        if (count($error) == 0) {
+            $name = mysqli_real_escape_string($conn, $_POST['name']);
+            $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+
+            $query = "INSERT INTO users(password, name, email) VALUES('$password', '$name', '$email')";
+            
+            if (mysqli_query($conn, $query)) {
+                session_start();
+                $_SESSION["_agora_user_email"] = $email; // Email come identificativo
+                $_SESSION["_agora_user_id"] = mysqli_insert_id($conn);
+                mysqli_close($conn);
+                header("Location: home.php");
+                exit;
+            } else {
+                $error[] = "Errore di connessione al Database";
+            }
+        }
+
+        mysqli_close($conn);
+    }
+    else if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        $error = array("Riempi tutti i campi");
+    }
+?>
+
+<!-- PHP per il login -->
+<?php
+    require_once 'auth.php';
+    require_once 'dbconfig.php';
+
+    // Se l'utente è già autenticato, reindirizza alla home
+    if (checkAuth()) {
+        header('Location: home.php');
+        exit;
+    }
+
+    // Se email e password sono stati inviati
+    if (!empty($_POST["email"]) && !empty($_POST["password"])) {
+        $conn = mysqli_connect($dbconfig['host'], $dbconfig['user'], $dbconfig['password'], $dbconfig['name']) or die(mysqli_error($conn));
+
+        $email = mysqli_real_escape_string($conn, strtolower($_POST['email']));
+        $query = "SELECT * FROM users WHERE email = '$email'";
+        $res = mysqli_query($conn, $query) or die(mysqli_error($conn));
+
+        if (mysqli_num_rows($res) > 0) {
+            $entry = mysqli_fetch_assoc($res);
+            if (password_verify($_POST['password'], $entry['password'])) {
+                // Autenticazione riuscita: avvia la sessione
+                session_start();
+                $_SESSION["_agora_user_email"] = $entry['email'];
+                $_SESSION["_agora_user_id"] = $entry['id'];
+                
+                header("Location: home.php");
+                mysqli_free_result($res);
+                mysqli_close($conn);
+                exit;
+            }
+        }
+
+        // Email non trovata o password errata
+        $error = "Email e/o password errati.";
+    } else if (isset($_POST["email"]) || isset($_POST["password"])) {
+        $error = "Inserisci email e password.";
+    }
+?>
