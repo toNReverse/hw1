@@ -297,11 +297,7 @@
       </footer>
     </section>
   </header>
-<<<<<<< HEAD
-  <!-- SIDE PAGE (ACCEDI, CARRELLO)-->
-=======
   <!-- SIDE PAGE (LOGIN)-->
->>>>>>> 8198595 (lettura non completa di index.php)
   <div id="login-modal" class="modal hidden">
     <div class="modal-content">
       <button class="close-btn-log">&times;</button>
@@ -320,17 +316,13 @@
       <div class="separatore">
         <hr><span>o</span><hr>
       </div>
-      <form>
+      <form name="login" method="post">
         <label for="email">E-mail</label>
         <input type="email" id="email" placeholder="E-mail"/>
   
         <label for="password">Password</label>
         <div class="password-container">
           <input type="password" id="password" placeholder="Password" />
-<<<<<<< HEAD
-          <img src="./img/open-eye.png" alt="Mostra password" class="toggle-password" />
-=======
->>>>>>> 8198595 (lettura non completa di index.php)
         </div>
   
         <div class="login-options">
@@ -341,11 +333,7 @@
         <button type="submit" class="login-submit"><span class="traslate">ACCEDI</span></button>
       </form>
       <div class="signup-link">
-<<<<<<< HEAD
-        Non hai un account? <a href="./signup.php">Registrati</a>
-=======
-        Non hai un account? <a href="#" id="log-to-reg">Registrati</a>
-
+        Non hai un account? <a id="log-to-reg">Registrati</a>
       </div>
     </div>
   </div>
@@ -353,33 +341,29 @@
   <div id="signup-modal" class="modal hidden">
     <div class="modal-content">
       <button class="close-btn-signup">&times;</button>
-      <img src="./img/signup-art.png" alt="Signup Art" class="modal-img" />
 
       <h2 class="modal-title">Crea account</h2>
 
-      <form method="POST" action="register.php">
+      <form method="POST" action="register.php"> <!-- non devo mettere action.php se rimango nella stessa pagina-->
+
+        <label for="email">E-mail</label>
         <input type="email" name="email" placeholder="E-mail" required />
+        
+        <label for="password">Password</label>
         <input type="password" name="password" placeholder="Password" required />
 
-        <div class="phone-input">
-          <span>+39</span>
-          <input type="tel" name="phone" placeholder="Telefono" required />
+        <label for="telefono">Telefono</label>
+        <input type="tel" name="phone" placeholder="Telefono" required />
+
+        <div class="login-options">
+          <label><input type="checkbox"/><span class="traslate">Mantieni attiva la sessione</span></label>
+          <a class = "traslate">Hai dimenticato la password?</a>
         </div>
 
         <p class="info-text">
           Ti invieremo un SMS per confermare il tuo numero e associarlo al tuo account
         </p>
-
-        <label class="checkbox">
-          <input type="checkbox" name="keep_logged_in" />
-          <span>Mantieni attiva la sessione</span>
-        </label>
-
-        <div class="info-box">
-          <img src="./img/newsletter-icon.png" alt="Newsletter" />
-          <span>Inoltre, ottieni 1,00 € per la tua iscrizione alla newsletter</span>
-        </div>
-
+        
         <label class="checkbox">
           <input type="checkbox" name="newsletter" />
           <span>Desidero ricevere notizie e comunicazioni commerciali personalizzate di BERSHKA per e-mail e altri mezzi</span>
@@ -396,8 +380,7 @@
       </form>
 
       <div class="signup-link">
-        Hai già un account? <a href="">Accedi</a>
->>>>>>> 8198595 (lettura non completa di index.php)
+        Hai già un account? <a id = "reg-to-log">Accedi</a>
       </div>
     </div>
   </div>

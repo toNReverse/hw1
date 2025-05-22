@@ -917,7 +917,7 @@ footer {
   }
 
 }
-/* // */
+/* SIDE PAGE LOGIN */
 .modal{
   position: fixed;
   top: 0;
@@ -1026,7 +1026,8 @@ form label {
 }
 
 form input[type="email"],
-form input[type="password"] {
+form input[type="password"],
+form input[type="tel"] {
   width: 100%;
   padding: 10px;
   border: 1px solid #ddd;
@@ -1084,7 +1085,7 @@ form input[type="password"] {
   border: none;
   cursor: pointer;
 }
-/* /SHOPPING CART/ */
+/* SIDE PAGE SHOPPING CART */
 .model.cart-empty {
   background-color: white;
   padding: 24px;
@@ -1732,9 +1733,98 @@ cursor: pointer;
   background: transparent;
   font-size: 16px;
   cursor: pointer;
-<<<<<<< HEAD
 }
-=======
+
+#log-to-reg{
+  cursor: pointer; /* non funziona(?) */
 }
-/* SIGN UP MODAL */
->>>>>>> 8198595 (lettura non completa di index.php)
+
+.phone-input {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.phone-input span {
+  padding: 14px;
+  background-color: #f3f3f3;
+  border-right: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.phone-input input {
+  border: none;
+  flex-grow: 1;
+  padding: 14px 12px;
+  font-size: 14px;
+}
+
+/* Testo informativo */
+.info-text {
+  font-size: 13px;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+/* Checkbox */
+.checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+}
+
+/* Box newsletter */
+.info-box {
+  display: flex;
+  align-items: center;
+  background-color: #f1f8ff;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.info-box img {
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+}
+
+/* Bottone */
+.login-submit {
+  width: 100%;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Link accesso */
+.signup-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.signup-link a {
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
