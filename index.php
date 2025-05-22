@@ -1,12 +1,3 @@
-<?php
-  session_start();
-  $_SESSION['user_id'] = 1; // Aggiungi questa riga per test temporaneo
-
-  if (!isset($_SESSION['user_id'])) {
-      header('Location: login.php');
-      exit;
-  }
-?>
 
 <!DOCTYPE html>
 <html lang="en">
