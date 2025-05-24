@@ -333,8 +333,7 @@
       <button class="close-btn-signup">&times;</button>
 
       <h2 class="modal-title">Crea account</h2>
-
-      <form method="POST" action=""> 
+      <form id="signup-form" method="POST">
 
         <label for="nome">Nome</label>
         <input type="text" name="name" placeholder="Nome" required />
@@ -345,12 +344,12 @@
         <label for="password">Password</label>
         <input type="password" name="password" placeholder="Password" required />
 
-        <label for="password">Conferma Password</label>
+        <label for="confirm_password">Conferma Password</label>
         <input type="password" name="confirm_password" placeholder="Conferma Password" required />
 
         <div class="login-options"> 
           <label><input type="checkbox"/><span class="traslate">Mantieni attiva la sessione</span></label>
-          <a class = "traslate">Hai dimenticato la password?</a>
+          <a class="traslate">Hai dimenticato la password?</a>
         </div>
 
         <p class="info-text">
@@ -359,18 +358,33 @@
         
         <label class="checkbox">
           <input type="checkbox" name="newsletter" />
-          <span>Desidero ricevere notizie e comunicazioni commerciali personalizzate di BERSHKA per e-mail e altri mezzi</span>
+          <span>Desidero ricevere notizie e comunicazioni commerciali personalizzate di BERSHKA</span>
         </label>
 
         <label class="checkbox">
           <input type="checkbox" name="privacy" required />
           <span>
-            Ho letto e accetto i <strong>Condizioni di utilizzo e acquisto</strong> e le informazioni relative all'uso dei miei dati personali di cui all'<strong>Informativa sulla privacy</strong>
+            Ho letto e accetto i <strong>Condizioni di utilizzo</strong> e l'<strong>Informativa sulla privacy</strong>
           </span>
         </label>
 
+        <!-- Error message container -->
+        <div class="error-message hidden">Messaggio di errore</div>
+
+
         <button type="submit" class="login-submit">CREA ACCOUNT</button>
       </form>
+      <div id="signup-error">
+      <?php
+      if (!empty($error)) {
+          echo '<ul class="error">';
+          foreach ($error as $e) {
+              echo "<li>$e</li>";
+          }
+          echo '</ul>';
+      }
+      ?>
+      </div>
 
       <div class="signup-link">
         Hai già un account? <a id = "reg-to-log">Accedi</a>
@@ -402,7 +416,7 @@
   <div id="nav-donna" class="modal-nav hidden">  
     <div class="nav-content">
       <ul class="nav-menu">
-        <li><a href="#">Combo wins % <span id = "off-txt">Fino al 10% di sconto</span></li></a>
+        <li><a href="#">Combo wins % <span id="off-txt">Fino al 10% di sconto</span></a></li>
         <li><a href="#">Novità</a></li>
         <li><a href="#">Abbigliamento <span class="arrow">→</span></a></li>
         <li><a href="#">Scarpe<span class="arrow">→</span></a></li>
@@ -590,107 +604,3 @@
   </div>
 </body>
 </html>
-
-<!-- PHP per la registrazione -->
-<?php
-    require_once 'auth.php';
-    require_once 'dbconfig.php'; // contiene $dbconfig
-
-    if (checkAuth()) {
-        header("Location: home.php");
-        exit;
-    }   
-
-    // Verifica l'esistenza di dati POST
-    if (!empty($_POST["name"]) && !empty($_POST["email"]) && !empty($_POST["password"]) && !empty($_POST["confirm_password"]) && !empty($_POST["privacy"]))
-    {
-        $error = array();
-        $conn = mysqli_connect($dbconfig['host'], $dbconfig['user'], $dbconfig['password'], $dbconfig['name']) or die(mysqli_error($conn));
-
-        // PASSWORD: lunghezza minima
-        if (strlen($_POST["password"]) < 8) {
-            $error[] = "Caratteri password insufficienti";
-        } 
-
-        // CONFERMA PASSWORD
-        if ($_POST["password"] !== $_POST["confirm_password"]) {
-            $error[] = "Le password non coincidono";
-        }
-
-        // EMAIL
-        if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-            $error[] = "Email non valida";
-        } else {
-            $email = mysqli_real_escape_string($conn, strtolower($_POST['email']));
-            $res = mysqli_query($conn, "SELECT email FROM users WHERE email = '$email'");
-            if (mysqli_num_rows($res) > 0) {
-                $error[] = "Email già utilizzata";
-            }
-        }
-
-        // REGISTRAZIONE NEL DATABASE
-        if (count($error) == 0) {
-            $name = mysqli_real_escape_string($conn, $_POST['name']);
-            $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-
-            $query = "INSERT INTO users(password, name, email) VALUES('$password', '$name', '$email')";
-            
-            if (mysqli_query($conn, $query)) {
-                session_start();
-                $_SESSION["_agora_user_email"] = $email; // Email come identificativo
-                $_SESSION["_agora_user_id"] = mysqli_insert_id($conn);
-                mysqli_close($conn);
-                header("Location: home.php");
-                exit;
-            } else {
-                $error[] = "Errore di connessione al Database";
-            }
-        }
-
-        mysqli_close($conn);
-    }
-    else if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        $error = array("Riempi tutti i campi");
-    }
-?>
-
-<!-- PHP per il login -->
-<?php
-    require_once 'auth.php';
-    require_once 'dbconfig.php';
-
-    // Se l'utente è già autenticato, reindirizza alla home
-    if (checkAuth()) {
-        header('Location: home.php');
-        exit;
-    }
-
-    // Se email e password sono stati inviati
-    if (!empty($_POST["email"]) && !empty($_POST["password"])) {
-        $conn = mysqli_connect($dbconfig['host'], $dbconfig['user'], $dbconfig['password'], $dbconfig['name']) or die(mysqli_error($conn));
-
-        $email = mysqli_real_escape_string($conn, strtolower($_POST['email']));
-        $query = "SELECT * FROM users WHERE email = '$email'";
-        $res = mysqli_query($conn, $query) or die(mysqli_error($conn));
-
-        if (mysqli_num_rows($res) > 0) {
-            $entry = mysqli_fetch_assoc($res);
-            if (password_verify($_POST['password'], $entry['password'])) {
-                // Autenticazione riuscita: avvia la sessione
-                session_start();
-                $_SESSION["_agora_user_email"] = $entry['email'];
-                $_SESSION["_agora_user_id"] = $entry['id'];
-                
-                header("Location: home.php");
-                mysqli_free_result($res);
-                mysqli_close($conn);
-                exit;
-            }
-        }
-
-        // Email non trovata o password errata
-        $error = "Email e/o password errati.";
-    } else if (isset($_POST["email"]) || isset($_POST["password"])) {
-        $error = "Inserisci email e password.";
-    }
-?>

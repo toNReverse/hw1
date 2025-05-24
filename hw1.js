@@ -284,3 +284,31 @@ languageSelect.addEventListener('change', () => {
   // Chiudi il menu dopo la selezione
   menuTraslate.classList.add('hidden');
 });
+
+// SIGNUP E LOGIN VALIDATION
+fetch('register.php', {
+  method: 'POST',
+  body: formData
+})
+.then(res => res.json())
+.then(data => {
+  const errorBox = document.querySelector('#signup-modal .error-message');
+  if (data.success) {
+    alert("Registrazione completata!");
+    document.getElementById('signup-modal').classList.add('hidden');
+    // Nascondi messaggi di errore precedenti, se c'erano
+    errorBox.textContent = '';
+    errorBox.classList.remove('visible');
+  } else {
+    // Se il messaggio indica che l'utente è già registrato
+    if (data.message && data.message.toLowerCase().includes('già registrato')) {
+      alert("Attenzione: utente già registrato!");
+    }
+    setTimeout(() => {
+      errorBox.classList.remove('visible');
+    }, 5000);
+    errorBox.textContent = data.message;
+    errorBox.classList.add('visible');
+  }
+})
+.catch(error => console.error('Errore:', error));
