@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 
-$api_key = '476a4fe57c441aba64f0bcd94b094e5878b15a9b3c3a85b06a68be8418058462'; // Inserisci la tua chiave API di SerpApi
+$api_key = ''; // Inserisci la tua chiave API di SerpApi
 $query = isset($_GET['q']) ? urlencode($_GET['q']) : '';
 
 if (empty($query)) {
