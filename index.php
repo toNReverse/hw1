@@ -166,7 +166,7 @@
             </div>
             <div class="product-item">
                 <img src="./img/5tracksuit.jpg" alt="Prodotto 5">
-                <div class="product-text">Tuta</div>
+                <div class="product-text">Pantaloni</div>
             </div>
             <div class="product-item">
                 <img src="./img/6shoes.jpg" alt="Prodotto 6">
@@ -232,7 +232,7 @@
             </div>
     
             <div class="suggested-product">
-                <img src="img/3prodsuggested.jpg" alt="Jeans baggy">
+                <img src="img/4prodsuggested.jpg" alt="Jeans baggy">
                 <h3>Jeans baggy</h3>
                 <p class="price">35,99 €</p>
             </div>
