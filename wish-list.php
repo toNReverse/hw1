@@ -9,7 +9,6 @@
   <meta charset="UTF-8">
   <title>Preferiti</title>
   <link rel="stylesheet" href="hw1.css"> 
-
   <link rel="stylesheet" href="wish-list.css"> 
   <script src="hw1.js" defer></script>
   <script src="wish-list.js" defer></script>
@@ -216,6 +215,115 @@
       </div>
     </div>  
   </section>
+
+
+  <!-- SEARCH BAR -->
+<div id="search-page">
+  <div class="search-container-page-log-sign">
+    <img src="img/54481.png" alt="Search" class="search-icon">
+    <input type="text" placeholder="CERCA" class="search-input-page">
+  </div>
+
+  <!-- Risultati dinamici della ricerca -->
+  <div id="results" class="search-results product-container"></div>
+
+  <!-- Tag di ricerca rapida -->
+  <div class="top-search">
+    <div class="top-search-tag">🔥 <span class="traslate">Body</span></div>
+    <div class="top-search-tag">🔥 <span class="traslate">Top</span></div>
+    <div class="top-search-tag">🔥 <span class="traslate">Felpe</span></div>
+    <div class="top-search-tag">🔥 <span class="traslate">Camicia</span></div>
+    <div class="top-search-tag">🔥 <span class="traslate">Borse</span></div>
+  </div>
+
+  <!-- Prodotti suggeriti statici -->
+  <div class="top-search-suggest">
+    <h3 class = "search-suggest-text">Possiamo consigliarti</h3>
+    <div class="product-container static-products"> <!-- importante la classe -->
+      <!-- I tuoi prodotti statici rimangono invariati -->
+      <div class="product-card">
+        <img src="img/top-s-1.jpg" alt="Jeans baggy">
+        <div class="product-info">
+          <div class="left-info">
+            <p class="product-name">Jeans baggy</p>
+            <div class="price-line">
+              <span class="price-red">17,99 €</span>
+              <span class="discount">-50%</span>
+            </div>
+            <p class="price-old">35,99 €</p>
+          </div>
+          <div class="right-icon">
+            <img src="img/hearth-search-page.png" alt="cuoricino">
+          </div>
+        </div>
+      </div>
+        <div class="product-card">
+          <img src="img/top-s-2.jpg" alt="Jeans baggy">
+          <div class="product-info">
+            <div class="left-info">
+              <p class="product-name">Jeans baggy</p>
+              <div class="price-line">
+                <span class="price-red">17,99 €</span>
+                <span class="discount">-50%</span>
+              </div>
+              <p class="price-old">35,99 €</p>
+            </div>
+            <div class="right-icon">
+              <img src="img/hearth-search-page.png" alt="cuoricino">
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="img/top-s-3.jpg" alt="Jeans baggy">
+          <div class="product-info">
+            <div class="left-info">
+              <p class="product-name">Jeans baggy</p>
+              <div class="price-line">
+                <span class="price-red">17,99 €</span>
+                <span class="discount">-50%</span>
+              </div>
+              <p class="price-old">35,99 €</p>
+            </div>
+            <div class="right-icon">
+              <img src="img/hearth-search-page.png" alt="cuoricino">
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="img/top-s-4.jpg" alt="Jeans baggy">
+          <div class="product-info">
+            <div class="left-info">
+              <p class="product-name">Jeans baggy</p>
+              <div class="price-line">
+                <span class="price-red">17,99 €</span>
+                <span class="discount">-50%</span>
+              </div>
+              <p class="price-old">35,99 €</p>
+            </div>
+            <div class="right-icon">
+              <img src="img/hearth-search-page.png" alt="cuoricino">
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="img/top-s-5.jpg" alt="Jeans baggy">
+          <div class="product-info">
+            <div class="left-info">
+              <p class="product-name">Jeans baggy</p>
+              <div class="price-line">
+                <span class="price-red">17,99 €</span>
+                <span class="discount">-50%</span>
+              </div>
+              <p class="price-old">35,99 €</p>
+            </div>
+            <div class="right-icon">
+              <img src="img/hearth-search-page.png" alt="cuoricino">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>
