@@ -144,17 +144,21 @@ for (const code in symbols) {
 }
 
 // Mostra/nasconde il menu valuta
-currencySelector.addEventListener('click', () => {
-  menuValuta.classList.toggle('hidden');
-});
+if (currencySelector && menuValuta) {
+  currencySelector.addEventListener("click", () => {
+    menuValuta.classList.toggle("hidden");
+  });
+}
 
 // Quando si seleziona una nuova valuta
-currencyDropdown.addEventListener('change', () => {
-  const selectedCurrency = currencyDropdown.value;
-  console.log('Valuta selezionata:', selectedCurrency);
-  menuValuta.classList.add('hidden');
-  updateExchangeRates(selectedCurrency);
-});
+if (currencyDropdown && menuValuta) {
+  currencyDropdown.addEventListener('change', () => {
+    const selectedCurrency = currencyDropdown.value;
+    console.log('Valuta selezionata:', selectedCurrency);
+    menuValuta.classList.add('hidden');
+    updateExchangeRates(selectedCurrency);
+  });
+}
 
 // Funzione per aggiornare i prezzi in base alla valuta selezionata
 function updateExchangeRates(toCurrency) {
@@ -208,55 +212,167 @@ const menuTraslate = document.getElementById('language-menu');
 const languageSelect = document.getElementById('language');
 
 // Mostra/nasconde il menu a tendina
-selector.addEventListener('click', () => {
-  menuTraslate.classList.toggle('hidden');
-});
+if (selector && menuTraslate) {
+  selector.addEventListener('click', () => {
+    menuTraslate.classList.toggle('hidden');
+  });
+}
 
 // Traduzione al cambio lingua
-languageSelect.addEventListener('change', () => {
-  const selectedLang = languageSelect.value;
+if (languageSelect) {
+  languageSelect.addEventListener('change', () => {
+    const selectedLang = languageSelect.value;
 
-  // Seleziona solo i tag da tradurre
-  const elements = document.querySelectorAll(
-    '#linksLEFT a, #gender-tabs a, .menu-content li, #linksRIGHT a, #search-text, .box-text h1, .product-text, .text_wrapper a, .gtl-text-container p, .cta-button, .suggested-text h2, .suggested-product h3, .spam-conto h2, .spam-conto p, .spam-conto a, .footer-container h3, .footer-container #traslate, .footer-container .small-text, .footer-container a, .modal-title, #facebook-access, .privacy-text, .login-options .traslate, .login-submit .traslate, .signup-link, .cart-header h2, .favorites-btn .traslate, .cart-empty-content h3, .cart-empty-content p, .cart-empty-content .discover-btn, .nav-menu a, .top-search-tag .traslate, .top-search-suggest h3, .product-name, .search-input-page'
-  );
+    const elements = document.querySelectorAll(
+      '#linksLEFT a, #gender-tabs a, .menu-content li, #linksRIGHT a, #search-text, .box-text h1, .product-text, .text_wrapper a, .gtl-text-container p, .cta-button, .suggested-text h2, .suggested-product h3, .spam-conto h2, .spam-conto p, .spam-conto a, .footer-container h3, .footer-container #traslate, .footer-container .small-text, .footer-container a, .modal-title, #facebook-access, .privacy-text, .login-options .traslate, .login-submit .traslate, .signup-link, .cart-header h2, .favorites-btn .traslate, .cart-empty-content h3, .cart-empty-content p, .cart-empty-content .discover-btn, .nav-menu a, .top-search-tag .traslate, .top-search-suggest h3, .product-name, .search-input-page'
+    );
 
-  elements.forEach(el => {
-    const originalText = el.textContent.trim();
-    if (!originalText) return;
+    elements.forEach(el => {
+      const originalText = el.textContent.trim();
+      if (!originalText) return;
 
-    // Salva testo originale solo una volta
-    if (!el.dataset.original) {
-      el.dataset.original = originalText;
+      if (!el.dataset.original) {
+        el.dataset.original = originalText;
+      }
+
+      if (selectedLang === 'it') {
+        el.textContent = el.dataset.original;
+        return;
+      }
+
+      fetch(`translate.php?text=${encodeURIComponent(originalText)}&to=${selectedLang}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.responseData && data.responseData.translatedText) {
+            el.textContent = data.responseData.translatedText;
+          }
+        })
+        .catch(err => {
+          console.error('Errore nella traduzione:', err);
+        });
+    });
+
+    if (menuTraslate) {
+      menuTraslate.classList.add('hidden');
     }
+  });
+}
 
-    // Se torna a italiano, ripristina
-    if (selectedLang === 'it') {
-      el.textContent = el.dataset.original;
+// === SEARCH PAGE ===
+document.addEventListener("DOMContentLoaded", () => {
+  // Recupera l'input di ricerca (può avere classi/ID diversi in base alla pagina)
+  const input = document.querySelector(".search-input-page") || document.getElementById("search-input-products");
+
+  // Contenitore dei risultati di ricerca (anche qui supporta due pagine diverse)
+  const resultsContainer = document.querySelector("#results") || document.getElementById("results-products");
+
+  // Sezioni opzionali per i suggerimenti visivi da mostrare o nascondere
+  const suggestSection = document.querySelector(".top-search-suggest") || document.querySelector(".suggest-section");
+  const suggestTitle = document.querySelector(".search-suggest-text") || document.querySelector(".suggest-title");
+  const topSearchTags = document.querySelector(".top-search") || document.querySelector(".top-search-tags");
+
+  let timeout = null; // Timer per il debounce (evita troppe richieste in tempo reale)
+
+  // Listener sull'input di ricerca
+  input?.addEventListener("input", () => {
+    clearTimeout(timeout); // Annulla il timer precedente
+    const query = input.value.trim(); // Rimuove spazi extra dalla query
+
+    // Se la query è troppo corta, ripristina i suggerimenti e termina
+    if (query.length < 3) {
+      resultsContainer.innerHTML = "";
+      if (suggestSection) suggestSection.style.display = "block";
+      if (suggestTitle) suggestTitle.style.display = "block";
+      if (topSearchTags) topSearchTags.style.display = "flex";
       return;
     }
 
-    // Chiama PHP per tradurre
-    fetch(`translate.php?text=${encodeURIComponent(originalText)}&to=${selectedLang}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.responseData && data.responseData.translatedText) {
-          el.textContent = data.responseData.translatedText;
-        }
-      })
-      .catch(err => {
-        console.error('Errore nella traduzione:', err);
-      });
+    // Attende 500ms prima di eseguire la ricerca (debounce)
+    timeout = setTimeout(() => {
+      fetch(`search_content.php?q=${encodeURIComponent(query)}`) // Richiesta alla ricerca
+        .then(res => res.json())
+        .then(data => {
+          resultsContainer.innerHTML = ""; // Svuota i risultati precedenti
+
+          // Nasconde i suggerimenti
+          if (suggestSection) suggestSection.style.display = "none";
+          if (suggestTitle) suggestTitle.style.display = "none";
+          if (topSearchTags) topSearchTags.style.display = "none";
+
+          // Se non ci sono risultati, mostra un messaggio
+          if (!data.shopping_results || data.shopping_results.length === 0) {
+            resultsContainer.innerHTML = "<p>Nessun risultato trovato.</p>";
+            return;
+          }
+
+          // Recupera i prodotti già nei preferiti
+          fetch("fetch-product.php")
+            .then(res => res.json())
+            .then(favorites => {
+              // Per ogni risultato della ricerca
+              data.shopping_results.forEach(item => {
+                // Verifica se l'articolo è già nei preferiti
+                const isFav = favorites.some(fav => fav.title === item.title);
+
+                // Crea la card HTML del prodotto
+                const card = document.createElement("div");
+                card.className = "product-card";
+                card.dataset.item = JSON.stringify(item); // Salva i dati per uso futuro
+
+                // HTML della card, incluso il cuoricino preferito
+                card.innerHTML = `
+                  <img class="product-image" src="${item.thumbnail}" alt="${item.title}">
+                  <div class="product-info">
+                    <div class="left-info">
+                      <p class="product-name">${item.title}</p>
+                      <div class="price-line">
+                        <span class="product-price">${item.extracted_price ? item.extracted_price.toFixed(2) + " €" : ""}</span>
+                        ${item.discount ? `<span class="discount">${item.discount}</span>` : ""}
+                      </div>
+                      ${item.previous_price ? `<p class="price-old">${item.previous_price.toFixed(2)} €</p>` : ""}
+                    </div>
+                    <div class="right-icon">
+                      <img class="fav-icon" src="${isFav ? 'img/filled-hearth-search-page.png' : 'img/hearth-search-page.png'}" alt="cuoricino">
+                    </div>
+                  </div>
+                `;
+
+                // Aggiunge la card al contenitore dei risultati
+                resultsContainer.appendChild(card);
+              });
+            });
+        })
+        .catch(err => {
+          console.error("Errore nella ricerca:", err);
+          resultsContainer.innerHTML = "<p>Errore nel caricamento dei risultati.</p>";
+        });
+    }, 500); // 500ms di attesa dopo l’ultimo input
   });
 
-  // Chiude il menu
-  menuTraslate.classList.add('hidden');
-});
+  // === Toggle preferito al click sul cuoricino nei risultati ===
+  document.addEventListener("click", (e) => {
+    // Verifica se il click è avvenuto su un'icona "fav-icon"
+    if (e.target.classList.contains("fav-icon")) {
+      const card = e.target.closest(".product-card"); // Trova la card corrispondente
+      const item = JSON.parse(card.dataset.item); // Recupera i dati del prodotto
 
+      const isFavorite = e.target.src.includes("filled-hearth-search-page.png");
 
-document.addEventListener("DOMContentLoaded", () => {
-  // === FUNZIONI === 
-  /*
+      if (isFavorite) {
+        // Se era già nei preferiti, lo rimuove
+        removeFavorite(item.id);
+        e.target.src = "img/hearth-search-page.png";
+        e.target.title = "Aggiungi ai preferiti";
+      } else {
+        // Altrimenti lo salva nei preferiti
+        saveProduct(item);
+        e.target.src = "img/filled-hearth-search-page.png";
+        e.target.title = "Rimuovi dai preferiti";
+      }
+    }
+  });
+
+  // === Funzione per rimuovere un preferito dal database ===
   function removeFavorite(id) {
     fetch("remove-product.php", {
       method: "POST",
@@ -268,8 +384,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!data.ok) alert("Errore nella rimozione: " + (data.error || "sconosciuto"));
     })
     .catch(() => alert("Errore nella rimozione"));
-  } */
+  }
 
+  // === Funzione per salvare un prodotto nei preferiti ===
   function saveProduct(product) {
     const formData = new FormData();
     formData.append("title", product.title || "");
@@ -288,142 +405,4 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch(() => alert("Errore nel salvataggio"));
   }
 
-  // === WISHLIST PAGE ===
-  const container = document.getElementById("wl-favorites-container");
-  if (container) {
-    fetch("load-favorites.php")
-      .then(response => response.json())
-      .then(favorites => {
-        if (!favorites || favorites.length === 0) {
-          container.innerHTML = "<p>Non hai ancora aggiunto preferiti.</p>";
-          return;
-        }
-
-        favorites.forEach(product => {
-          const card = document.createElement("div");
-          card.className = "wl-card";
-
-          card.innerHTML = `
-            <div class="wl-image-wrapper">
-              <img class="wl-product-image" src="${product.thumbnail}" alt="${product.title}">
-            </div>
-            <div class="wl-info">
-              <p class="wl-name">${product.title}</p>
-              <div class="wl-price-heart">
-                <span class="wl-price">${parseFloat(product.price).toFixed(2)} €</span>
-                <img class="wl-heart" src="img/filled-hearth-search-page.png" title="Rimuovi dai preferiti" alt="Rimuovi" data-id="${product.id}">
-              </div>
-            </div>
-          `;
-
-          card.querySelector(".wl-heart").addEventListener("click", () => {
-            removeFavorite(product.id);
-            card.remove();
-            if (container.children.length === 0) {
-              container.innerHTML = "<p>Non hai più preferiti.</p>";
-            }
-          });
-
-          container.appendChild(card);
-        });
-      })
-      .catch(err => {
-        console.error("Errore nel caricamento dei preferiti:", err);
-        container.innerHTML = "<p>Errore nel caricamento dei preferiti.</p>";
-      });
-  }
-
-  // === SEARCH PAGE ===
-  const input = document.querySelector(".search-input-page") || document.getElementById("search-input-products");
-  const resultsContainer = document.querySelector("#results") || document.getElementById("results-products");
-  const suggestSection = document.querySelector(".top-search-suggest") || document.querySelector(".suggest-section");
-  const suggestTitle = document.querySelector(".search-suggest-text") || document.querySelector(".suggest-title");
-  const topSearchTags = document.querySelector(".top-search") || document.querySelector(".top-search-tags");
-
-  let timeout = null;
-
-  input?.addEventListener("input", () => {
-    clearTimeout(timeout);
-    const query = input.value.trim();
-
-    if (query.length < 3) {
-      resultsContainer.innerHTML = "";
-      if (suggestSection) suggestSection.style.display = "block";
-      if (suggestTitle) suggestTitle.style.display = "block";
-      if (topSearchTags) topSearchTags.style.display = "flex";
-      return;
-    }
-
-    timeout = setTimeout(() => {
-      fetch(`search_content.php?q=${encodeURIComponent(query)}`)
-        .then(res => res.json())
-        .then(data => {
-          resultsContainer.innerHTML = "";
-
-          if (suggestSection) suggestSection.style.display = "none";
-          if (suggestTitle) suggestTitle.style.display = "none";
-          if (topSearchTags) topSearchTags.style.display = "none";
-
-          if (!data.shopping_results || data.shopping_results.length === 0) {
-            resultsContainer.innerHTML = "<p>Nessun risultato trovato.</p>";
-            return;
-          }
-
-          fetch("fetch-product.php")
-            .then(res => res.json())
-            .then(favorites => {
-              data.shopping_results.forEach(item => {
-                const isFav = favorites.some(fav => fav.title === item.title);
-
-                const card = document.createElement("div");
-                card.className = "product-card";
-                card.dataset.item = JSON.stringify(item);
-
-                card.innerHTML = `
-                  <img class="product-image" src="${item.thumbnail}" alt="${item.title}">
-                  <div class="product-info">
-                    <div class="left-info">
-                      <p class="product-name">${item.title}</p>
-                      <div class="price-line">
-                        <span class="product-price">${item.extracted_price ? item.extracted_price.toFixed(2) + " €" : ""}</span>
-                        ${item.discount ? `<span class="discount">${item.discount}</span>` : ""}
-                      </div>
-                      ${item.previous_price ? `<p class="price-old">${item.previous_price.toFixed(2)} €</p>` : ""}
-                    </div>
-                    <div class="right-icon">
-                      <img class="fav-icon" src="${isFav ? 'img/filled-hearth-search-page.png' : 'img/hearth-search-page.png'}" alt="cuoricino">
-                    </div>
-                  </div>
-                `;
-
-                resultsContainer.appendChild(card);
-              });
-            });
-        })
-        .catch(err => {
-          console.error("Errore nella ricerca:", err);
-          resultsContainer.innerHTML = "<p>Errore nel caricamento dei risultati.</p>";
-        });
-    }, 500);
-  });
-
-  // === Toggle preferito al click sul cuoricino nei risultati ===
-  document.addEventListener("click", (e) => {
-    if (e.target.classList.contains("fav-icon")) {
-      const card = e.target.closest(".product-card");
-      const item = JSON.parse(card.dataset.item);
-
-      const isFavorite = e.target.src.includes("filled-hearth-search-page.png");
-
-      if (isFavorite) {
-        removeFavorite(item.id); // usa item.id se disponibile
-        e.target.src = "img/hearth-search-page.png";
-        e.target.title = "Aggiungi ai preferiti";
-      } else {
-        saveProduct(item);
-        e.target.src = "img/filled-hearth-search-page.png";
-        e.target.title = "Rimuovi dai preferiti";
-      }
-    }
-  });
 });
