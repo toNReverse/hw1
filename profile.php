@@ -132,42 +132,152 @@ if (!$isLoggedIn) {
         </div>
       </div>
     </div>
-    
-<div class="profile-container">
-    <aside class="sidebar">
-        <h2>Ciao, <?php echo htmlspecialchars($userinfo['name']); ?>!</h2>
-        <p class="email"><?php echo htmlspecialchars($userinfo['email']); ?></p>
-        <ul>
-            <li>I miei acquisti</li>
-            <li>Resi online</li>
-            <li>Dati personali</li>
-            <li>Indirizzi salvati</li>
-            <li>I tuoi vantaggi MMBRS</li>
-            <li>Saldo MMBRSS e movimenti</li>
-        </ul>
-        <a href="logout.php" class="logout">Chiudi la sessione</a>
-    </aside>
 
-    <main class="main-content">
-        <h3>I miei acquisti</h3>
+<!-- SEARCH BAR -->
+<div id="search-page">
+  <div class="search-container-page-profile">
+    <img src="img/54481.png" alt="Search" class="search-icon">
+    <input type="text" placeholder="CERCA" class="search-input-page">
+  </div>
 
-        <div class="order-box">
-            <p class="status">Consegnato</p>
-            <p class="date">Lo hai ricevuto giorno 24/01</p>
-            <p class="price">45,98 €</p>
-            <div class="order-images">
-                <img src="img/img-cart1.jpg" alt="Prodotto 1">
-                <img src="img/img-cart2.jpg" alt="Prodotto 2">
+  <!-- Risultati dinamici della ricerca -->
+  <div id="results" class="search-results product-container"></div>
+
+  <!-- Tag di ricerca rapida -->
+  <div class="top-search">
+    <div class="top-search-tag">🔥 <span class="traslate">Body</span></div>
+    <div class="top-search-tag">🔥 <span class="traslate">Top</span></div>
+    <div class="top-search-tag">🔥 <span class="traslate">Felpe</span></div>
+    <div class="top-search-tag">🔥 <span class="traslate">Camicia</span></div>
+    <div class="top-search-tag">🔥 <span class="traslate">Borse</span></div>
+  </div>
+
+  <!-- Prodotti suggeriti statici -->
+  <div class="top-search-suggest">
+    <h3 class = "search-suggest-text">Possiamo consigliarti</h3>
+    <div class="product-container static-products"> <!-- importante la classe -->
+      <!-- I tuoi prodotti statici rimangono invariati -->
+      <div class="product-card">
+        <img src="img/top-s-1.jpg" alt="Jeans baggy">
+        <div class="product-info">
+          <div class="left-info">
+            <p class="product-name">Jeans baggy</p>
+            <div class="price-line">
+              <span class="price-red">17,99 €</span>
+              <span class="discount">-50%</span>
             </div>
+            <p class="price-old">35,99 €</p>
+          </div>
+          <div class="right-icon">
+            <img src="img/hearth-search-page.png" alt="cuoricino">
+          </div>
         </div>
+      </div>
+        <div class="product-card">
+          <img src="img/top-s-2.jpg" alt="Jeans baggy">
+          <div class="product-info">
+            <div class="left-info">
+              <p class="product-name">Jeans baggy</p>
+              <div class="price-line">
+                <span class="price-red">17,99 €</span>
+                <span class="discount">-50%</span>
+              </div>
+              <p class="price-old">35,99 €</p>
+            </div>
+            <div class="right-icon">
+              <img src="img/hearth-search-page.png" alt="cuoricino">
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="img/top-s-3.jpg" alt="Jeans baggy">
+          <div class="product-info">
+            <div class="left-info">
+              <p class="product-name">Jeans baggy</p>
+              <div class="price-line">
+                <span class="price-red">17,99 €</span>
+                <span class="discount">-50%</span>
+              </div>
+              <p class="price-old">35,99 €</p>
+            </div>
+            <div class="right-icon">
+              <img src="img/hearth-search-page.png" alt="cuoricino">
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="img/top-s-4.jpg" alt="Jeans baggy">
+          <div class="product-info">
+            <div class="left-info">
+              <p class="product-name">Jeans baggy</p>
+              <div class="price-line">
+                <span class="price-red">17,99 €</span>
+                <span class="discount">-50%</span>
+              </div>
+              <p class="price-old">35,99 €</p>
+            </div>
+            <div class="right-icon">
+              <img src="img/hearth-search-page.png" alt="cuoricino">
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="img/top-s-5.jpg" alt="Jeans baggy">
+          <div class="product-info">
+            <div class="left-info">
+              <p class="product-name">Jeans baggy</p>
+              <div class="price-line">
+                <span class="price-red">17,99 €</span>
+                <span class="discount">-50%</span>
+              </div>
+              <p class="price-old">35,99 €</p>
+            </div>
+            <div class="right-icon">
+              <img src="img/hearth-search-page.png" alt="cuoricino">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section>
+    <div class="profile-container">
+        <aside class="sidebar">
+            <h2>Ciao, <?php echo htmlspecialchars($userinfo['name']); ?>!</h2>
+            <p class="email"><?php echo htmlspecialchars($userinfo['email']); ?></p>
+            <ul>
+                <li>I miei acquisti</li>
+                <li>Resi online</li>
+                <li>Dati personali</li>
+                <li>Indirizzi salvati</li>
+                <li>I tuoi vantaggi MMBRS</li>
+                <li>Saldo MMBRSS e movimenti</li>
+            </ul>
+            <a href="logout.php" class="logout">Chiudi la sessione</a>
+        </aside>
 
-        <div class="guest-box">
-            <h4>Hai effettuato l'acquisto come ospite?</h4>
-            <p>Se non trovi il tuo ordine, probabilmente hai effettuato l'acquisto senza essere registrato.</p>
-            <a href="#" class="find-order">Trovare un ordine &rarr;</a>
-        </div>
-    </main>
-</div>
+        <main class="main-content">
+            <h3>I miei acquisti</h3>
+
+            <div class="order-box">
+                <p class="status">Consegnato</p>
+                <p class="date">Lo hai ricevuto giorno 24/01</p>
+                <p class="price">45,98 €</p>
+                <div class="order-images">
+                    <img src="img/img-cart1.jpg" alt="Prodotto 1">
+                    <img src="img/img-cart2.jpg" alt="Prodotto 2">
+                </div>
+            </div>
+
+            <div class="guest-box">
+                <h4>Hai effettuato l'acquisto come ospite?</h4>
+                <p>Se non trovi il tuo ordine, probabilmente hai effettuato l'acquisto senza essere registrato.</p>
+                <a href="#" class="find-order">Trovare un ordine &rarr;</a>
+            </div>
+        </main>
+    </div>
+  </section>
+
 <!-- NAV -->
   <div id="nav-donna" class="modal-nav hidden">  
     <div class="nav-content">

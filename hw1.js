@@ -264,7 +264,6 @@ languageSelect.addEventListener('change', () => {
 });
 
 
-// wish-list.js
 
 document.addEventListener("DOMContentLoaded", () => {
   // === WISHLIST PAGE ===
@@ -311,7 +310,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // === SEARCH PAGE ===
-  const input = document.querySelector(".search-input-page") || document.getElementById("search-input-products");
+  const input = document.querySelector(".search-input-page") ||  document.getElementById("search-input-products");
   const resultsContainer = document.querySelector("#results") || document.getElementById("results-products");
   const suggestSection = document.querySelector(".top-search-suggest") || document.querySelector(".suggest-section");
   const suggestTitle = document.querySelector(".search-suggest-text") || document.querySelector(".suggest-title");
@@ -385,12 +384,23 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Salvataggio al click sul cuoricino
+  // Toggle preferito al click sul cuoricino
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("fav-icon")) {
       const card = e.target.closest(".product-card");
       const item = JSON.parse(card.dataset.item);
-      saveProduct(item);
-      e.target.src = "img/filled-hearth-search-page.png";
+
+      const isFavorite = e.target.src.includes("filled-hearth-search-page.png");
+
+      if (isFavorite) {
+        removeFavorite(item.title);
+        e.target.src = "img/hearth-search-page.png";
+        e.target.title = "Aggiungi ai preferiti";
+      } else {
+        saveProduct(item);
+        e.target.src = "img/filled-hearth-search-page.png";
+        e.target.title = "Rimuovi dai preferiti";
+      }
     }
   });
 

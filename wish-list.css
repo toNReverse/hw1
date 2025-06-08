@@ -18,14 +18,7 @@
     background-color: #fff;
     box-shadow: 0 1px 4px rgba(0,0,0,0.1);
   }
-  
-  .wl-product-image {
-    width: 100%;
-    height: 250px;  /* altezza fissa */
-    object-fit: cover;  /* ritaglia mantenendo le proporzioni */
-    display: block;
-  }
-  
+
   .wl-info {
     padding: 1rem;
     display: flex;
@@ -36,6 +29,7 @@
   .wl-name {
     font-size: 1rem;
     font-weight: 600;
+    padding-bottom: 5px;
   }
   
   .wl-price-heart {
@@ -53,4 +47,47 @@
     width: 20px;
     height: 20px;
     cursor: pointer;
+  }
+  .wl-card {
+    border-radius: 12px;
+    overflow: hidden; /* per fare in modo che i bordi arrotondati taglino il contenuto */
+  }
+  
+  .wl-product-image {
+    border-radius: 12px 12px 0 0;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+  }
+  .wl-image-wrapper {
+    position: relative;
+  }
+  
+  .wl-add-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 30px;
+    height: 30px;
+    background-color: #007bff;
+    border-radius: 50%;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 30px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    z-index: 101;
+  }
+  .wl-add-btn:hover {
+    background-color: #0056b3;
+  }
+  .wl-add-btn {
+    background-color: red !important;
   }

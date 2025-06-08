@@ -16,7 +16,7 @@
 
 </head>
 <body>
-<nav class="navbar-container">
+<nav class="navbar-container">  
       <div id="linksLEFT">
         <a>Donna</a>
         <a>Uomo</a>
@@ -94,7 +94,6 @@
     </nav>
     
     <!-- SIDE PAGE (ACCEDI, CARRELLO) **RIMOSSA**-->
-  
     <div id="cart-modal" class="modal hidden">
       <div class="model cart-empty">
         <button class="close-btn-cart" aria-label="Chiudi carrello">&times;</button>
@@ -209,12 +208,15 @@
       </ul>
     </div>
   </div>
+  
+  <section>
+    <div class="wl-container">
+      <h1>Preferiti</h1>
+      <div class="wl-grid" id="wl-favorites-container">
+        <!-- I preferiti saranno caricati da JS -->
+      </div>
+    </div>  
+  </section>
 
-  <div class="wl-container">
-    <h1>Preferiti</h1>
-    <div class="wl-grid" id="wl-favorites-container">
-      <!-- I preferiti saranno caricati da JS -->
-    </div>
-  </div>
 </body>
 </html>
