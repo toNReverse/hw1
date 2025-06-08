@@ -264,13 +264,45 @@ languageSelect.addEventListener('change', () => {
 });
 
 
-
 document.addEventListener("DOMContentLoaded", () => {
+  // === FUNZIONI === 
+  /*
+  function removeFavorite(id) {
+    fetch("remove-product.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (!data.ok) alert("Errore nella rimozione: " + (data.error || "sconosciuto"));
+    })
+    .catch(() => alert("Errore nella rimozione"));
+  } */
+
+  function saveProduct(product) {
+    const formData = new FormData();
+    formData.append("title", product.title || "");
+    formData.append("snippet", product.snippet || "");
+    formData.append("price", product.extracted_price || "");
+    formData.append("thumbnail", product.thumbnail || "");
+
+    fetch("save-product.php", {
+      method: "POST",
+      body: formData,
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (!data.ok) alert("Errore nel salvataggio");
+      })
+      .catch(() => alert("Errore nel salvataggio"));
+  }
+
   // === WISHLIST PAGE ===
   const container = document.getElementById("wl-favorites-container");
   if (container) {
-    fetch("fetch-product.php")
-      .then(r => r.json())
+    fetch("load-favorites.php")
+      .then(response => response.json())
       .then(favorites => {
         if (!favorites || favorites.length === 0) {
           container.innerHTML = "<p>Non hai ancora aggiunto preferiti.</p>";
@@ -282,18 +314,20 @@ document.addEventListener("DOMContentLoaded", () => {
           card.className = "wl-card";
 
           card.innerHTML = `
-            <img class="wl-product-image" src="${product.thumbnail}" alt="${product.title}">
+            <div class="wl-image-wrapper">
+              <img class="wl-product-image" src="${product.thumbnail}" alt="${product.title}">
+            </div>
             <div class="wl-info">
               <p class="wl-name">${product.title}</p>
               <div class="wl-price-heart">
                 <span class="wl-price">${parseFloat(product.price).toFixed(2)} €</span>
-                <img class="wl-heart" src="img/filled-hearth-search-page.png" title="Rimuovi dai preferiti" alt="Rimuovi" data-title="${product.title}">
+                <img class="wl-heart" src="img/filled-hearth-search-page.png" title="Rimuovi dai preferiti" alt="Rimuovi" data-id="${product.id}">
               </div>
             </div>
           `;
 
           card.querySelector(".wl-heart").addEventListener("click", () => {
-            removeFavorite(product.title);
+            removeFavorite(product.id);
             card.remove();
             if (container.children.length === 0) {
               container.innerHTML = "<p>Non hai più preferiti.</p>";
@@ -310,7 +344,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // === SEARCH PAGE ===
-  const input = document.querySelector(".search-input-page") ||  document.getElementById("search-input-products");
+  const input = document.querySelector(".search-input-page") || document.getElementById("search-input-products");
   const resultsContainer = document.querySelector("#results") || document.getElementById("results-products");
   const suggestSection = document.querySelector(".top-search-suggest") || document.querySelector(".suggest-section");
   const suggestTitle = document.querySelector(".search-suggest-text") || document.querySelector(".suggest-title");
@@ -383,8 +417,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 500);
   });
 
-  // Salvataggio al click sul cuoricino
-  // Toggle preferito al click sul cuoricino
+  // === Toggle preferito al click sul cuoricino nei risultati ===
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("fav-icon")) {
       const card = e.target.closest(".product-card");
@@ -393,7 +426,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const isFavorite = e.target.src.includes("filled-hearth-search-page.png");
 
       if (isFavorite) {
-        removeFavorite(item.title);
+        removeFavorite(item.id); // usa item.id se disponibile
         e.target.src = "img/hearth-search-page.png";
         e.target.title = "Aggiungi ai preferiti";
       } else {
@@ -403,36 +436,4 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   });
-
-  // === FUNZIONI FAVORITI ===
-  function saveProduct(product) {
-    const formData = new FormData();
-    formData.append("title", product.title || "");
-    formData.append("snippet", product.snippet || "");
-    formData.append("price", product.extracted_price || "");
-    formData.append("thumbnail", product.thumbnail || "");
-
-    fetch("save-product.php", {
-      method: "POST",
-      body: formData,
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (!data.ok) alert("Errore nel salvataggio");
-      })
-      .catch(() => alert("Errore nel salvataggio"));
-  }
-
-  function removeFavorite(title) {
-    fetch("remove-product.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title }),
-    })
-      .then(r => r.json())
-      .then(data => {
-        if (!data.ok) alert("Errore nella rimozione");
-      })
-      .catch(() => alert("Errore nella rimozione"));
-  }
 });

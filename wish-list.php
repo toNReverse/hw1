@@ -95,28 +95,27 @@
     
     <!-- SIDE PAGE (ACCEDI, CARRELLO) **RIMOSSA**-->
     <div id="cart-modal" class="modal hidden">
-      <div class="model cart-empty">
-        <button class="close-btn-cart" aria-label="Chiudi carrello">&times;</button>
+    <div class="model cart-empty">
+      <button class="close-btn-cart" aria-label="Chiudi carrello">&times;</button>
 
-        <div class="cart-header">
-          <h2>Carrello</h2>
-          <div class="cart-actions">
-            <a href="wish-list.php" class="favorites-btn">
-              <span class="icon"><img src="./img/heart-icon.png" alt="cuoricino"></span> 
-              <span class="traslate">Preferiti</span>
-            </a>
-          </div>
-        </div>
-      
-        <div class="cart-empty-content">
-        <img src="https://em-content.zobj.net/thumbs/240/apple/354/broken-heart_1f494.png" alt="Cuore spezzato" class="broken-heart" />
-          <!-- img src="img/nobg.png" alt="Cuore spezzato" class="broken-heart" /> -->
-          <h3>Carrello vuoto</h3>
-          <p>Non hai ancora nessun articolo nel carrello: scopri tutto quello che abbiamo in serbo per te</p>
-          <a href="wish-list.php" class="discover-btn">VAI AI PREFERITI</a>
+      <div class="cart-header">
+        <h2>Carrello</h2>
+        <div class="cart-actions">
+          <a href="wish-list.php" class="favorites-btn">
+            <span class="icon"><img src="./img/heart-icon.png" alt="cuoricino"></span> 
+            <span class="traslate">Preferiti</span>
+          </a>
         </div>
       </div>
+      
+      <div class="cart-empty-content">
+        <img src="img/nobg.png" alt="Cuore spezzato" class="broken-heart" />
+        <h3>Carrello vuoto</h3>
+        <p>Non hai ancora nessun articolo nel carrello: scopri tutto quello che abbiamo in serbo per te</p>
+        <a href="wish-list.php" class="discover-btn">VAI AI PREFERITI</a>
+      </div>
     </div>
+  </div>
 
   <div id="nav-donna" class="modal-nav hidden">  
     <div class="nav-content">

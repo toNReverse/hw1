@@ -111,31 +111,31 @@ if (!$isLoggedIn) {
     <!-- SIDE PAGE (ACCEDI, CARRELLO) **RIMOSSA**-->
   
     <div id="cart-modal" class="modal hidden">
-      <div class="model cart-empty">
-        <button class="close-btn-cart" aria-label="Chiudi carrello">&times;</button>
+    <div class="model cart-empty">
+      <button class="close-btn-cart" aria-label="Chiudi carrello">&times;</button>
 
-        <div class="cart-header">
-          <h2>Carrello</h2>
-          <div class="cart-actions">
-            <a href="wish-list.php" class="favorites-btn">
-              <span class="icon"><img src="./img/heart-icon.png" alt="cuoricino"></span> 
-              <span class="traslate">Preferiti</span>
-            </a>
-          </div>
-        </div>
-      
-        <div class="cart-empty-content">
-          <img src="img/nobg.png" alt="Cuore spezzato" class="broken-heart" />
-          <h3>Carrello vuoto</h3>
-          <p>Non hai ancora nessun articolo nel carrello: scopri tutto quello che abbiamo in serbo per te</p>
-          <a href="wish-list.php" class="discover-btn">VAI AI PREFERITI</a>
+      <div class="cart-header">
+        <h2>Carrello</h2>
+        <div class="cart-actions">
+          <a href="wish-list.php" class="favorites-btn">
+            <span class="icon"><img src="./img/heart-icon.png" alt="cuoricino"></span> 
+            <span class="traslate">Preferiti</span>
+          </a>
         </div>
       </div>
+      
+      <div class="cart-empty-content">
+        <img src="img/nobg.png" alt="Cuore spezzato" class="broken-heart" />
+        <h3>Carrello vuoto</h3>
+        <p>Non hai ancora nessun articolo nel carrello: scopri tutto quello che abbiamo in serbo per te</p>
+        <a href="wish-list.php" class="discover-btn">VAI AI PREFERITI</a>
+      </div>
     </div>
+  </div>
 
 <!-- SEARCH BAR -->
 <div id="search-page">
-  <div class="search-container-page-profile">
+  <div class="search-container-page-log-sign">
     <img src="img/54481.png" alt="Search" class="search-icon">
     <input type="text" placeholder="CERCA" class="search-input-page">
   </div>

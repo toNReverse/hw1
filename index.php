@@ -82,7 +82,7 @@
         <div class="search-container">
           <img src="./img/54481.png" alt="Search" class="search-icon"><span id="search-text">CERCA</span>
         </div>
-<!-- Se l'utente è loggato ($isLoggedIn è true), il nome dell'utente preso dalla variabile di sessione "_agora_name". -->        <?php if ($isLoggedIn): ?>
+        <!-- Se l'utente è loggato ($isLoggedIn è true), il nome dell'utente preso dalla variabile di sessione "_agora_name". -->        <?php if ($isLoggedIn): ?>
           <a href="profile.php" class="user-link"><?php echo $_SESSION["_agora_name"]; ?></a>
         <?php else: ?>
           <a href="login.php" id="login">Accedi</a>
@@ -90,28 +90,28 @@
         <a>Carrello</a>
       </div>
     </nav>
-    <div id="cart-modal" class="modal hidden">
-  <div class="model cart-empty">
-    <button class="close-btn-cart" aria-label="Chiudi carrello">&times;</button>
+  <div id="cart-modal" class="modal hidden">
+    <div class="model cart-empty">
+      <button class="close-btn-cart" aria-label="Chiudi carrello">&times;</button>
 
-    <div class="cart-header">
-      <h2>Carrello</h2>
-      <div class="cart-actions">
-        <a href="wish-list.php" class="favorites-btn">
-          <span class="icon"><img src="./img/heart-icon.png" alt="cuoricino"></span> 
-          <span class="traslate">Preferiti</span>
-        </a>
+      <div class="cart-header">
+        <h2>Carrello</h2>
+        <div class="cart-actions">
+          <a href="wish-list.php" class="favorites-btn">
+            <span class="icon"><img src="./img/heart-icon.png" alt="cuoricino"></span> 
+            <span class="traslate">Preferiti</span>
+          </a>
+        </div>
+      </div>
+      
+      <div class="cart-empty-content">
+        <img src="img/nobg.png" alt="Cuore spezzato" class="broken-heart" />
+        <h3>Carrello vuoto</h3>
+        <p>Non hai ancora nessun articolo nel carrello: scopri tutto quello che abbiamo in serbo per te</p>
+        <a href="wish-list.php" class="discover-btn">VAI AI PREFERITI</a>
       </div>
     </div>
-  
-    <div class="cart-empty-content">
-      <img src="img/nobg.png" alt="Cuore spezzato" class="broken-heart" />
-      <h3>Carrello vuoto</h3>
-      <p>Non hai ancora nessun articolo nel carrello: scopri tutto quello che abbiamo in serbo per te</p>
-      <a href="wish-list.php" class="discover-btn">VAI AI PREFERITI</a>
-    </div>
   </div>
-</div>
   <!-- MENU API CONVERSIONE VALUTA-->
   <div id="currency-selector">💱</div>
   <div id="currency-menu" class="hidden">

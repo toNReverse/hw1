@@ -1503,6 +1503,13 @@ line-height: 1;
   justify-content: flex-start;
   border-bottom: 1px solid black;
 }
+.search-container-page-log-sign {
+  margin-top: 47px;
+}
+.search-container-page-log-sign input{
+  border: none;
+}
+
 
 .search-input-page {
   width: 100%;
