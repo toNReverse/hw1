@@ -128,91 +128,80 @@ const currencyDropdown = document.getElementById('currency');
 
 // Mappa simboli-valuta
 const symbols = {
-EUR: '€',
-USD: '$',
-GBP: '£',
-JPY: '¥',
-CAD: 'C$',
-AUD: 'A$',
-CHF: 'CHF'
+  EUR: '€',
+  USD: '$',
+  GBP: '£',
+  JPY: '¥',
+  CAD: 'C$',
+  AUD: 'A$',
+  CHF: 'CHF'
 };
 
 // Mappa inversa simbolo -> codice
 const reverseSymbols = {};
 for (const code in symbols) {
-reverseSymbols[symbols[code]] = code;
+  reverseSymbols[symbols[code]] = code;
 }
 
 // Mostra/nasconde il menu valuta
 currencySelector.addEventListener('click', () => {
-menuValuta.classList.toggle('hidden');
+  menuValuta.classList.toggle('hidden');
 });
 
 // Quando si seleziona una nuova valuta
 currencyDropdown.addEventListener('change', () => {
-const selectedCurrency = currencyDropdown.value;
-console.log('Valuta selezionata:', selectedCurrency); // Viene stampato il codice in console.
-menuValuta.classList.add('hidden'); // Il menu viene chiuso.
-updateExchangeRates(selectedCurrency); // Viene chiamata updateExchangeRates per convertire i prezzi.
-
+  const selectedCurrency = currencyDropdown.value;
+  console.log('Valuta selezionata:', selectedCurrency);
+  menuValuta.classList.add('hidden');
+  updateExchangeRates(selectedCurrency);
 });
 
 // Funzione per aggiornare i prezzi in base alla valuta selezionata
 function updateExchangeRates(toCurrency) {
-const priceSelectors = ['.price', '.price-red', '.price-old'];
-const priceElements = document.querySelectorAll(priceSelectors.join(', '));
+  const priceSelectors = ['.price', '.price-red', '.price-old'];
+  const priceElements = document.querySelectorAll(priceSelectors.join(', '));
 
-priceElements.forEach(priceElement => {
-  const text = priceElement.textContent.trim(); // Per ogni prezzo ottiene il testo e lo ripulisce.
+  priceElements.forEach(priceElement => {
+    const text = priceElement.textContent.trim();
 
+    // Trova il simbolo alla fine
+    let matchedSymbol = null;
+    let symbolLength = 0;
 
-  // Trova il simbolo alla fine della stringa
-  let matchedSymbol = null;
-  let symbolLength = 0;
-
-  /* Cerca quale simbolo di valuta è presente nel testo, una volta trovato separa l’importo (amountText) dal simbolo 
-  e converte il testo in numero (parseFloat). */
-  for (const symbol of Object.values(symbols)) {
-    if (text.endsWith(symbol)) {
-      matchedSymbol = symbol;
-      symbolLength = symbol.length;
-      break;
+    for (const symbol of Object.values(symbols)) {
+      if (text.endsWith(symbol)) {
+        matchedSymbol = symbol;
+        symbolLength = symbol.length;
+        break;
+      }
     }
-  }
 
-  if (!matchedSymbol) return;
+    if (!matchedSymbol) return;
 
-  // Ottieni l'importo come numero
-  const amountText = text.slice(0, -symbolLength).trim().replace(',', '.');
-  const amount = parseFloat(amountText);
-  if (isNaN(amount)) return;
+    // Estrai e converti l'importo
+    const amountText = text.slice(0, -symbolLength).trim().replace(',', '.');
+    const amount = parseFloat(amountText);
+    if (isNaN(amount)) return;
 
-  // Codice valuta di partenza
-  const fromCurrency = reverseSymbols[matchedSymbol]; // Determina da quale valuta stai convertendo.
-  if (fromCurrency === toCurrency) return;  // Se la valuta selezionata è la stessa di quella attuale, non fa nulla.
+    const fromCurrency = reverseSymbols[matchedSymbol];
+    if (fromCurrency === toCurrency) return;
 
-
-  // API di conversione
-  const apiKey = 'INSERISCI API KEY :P';
-  const apiUrl = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/${fromCurrency}`;
-
-  fetch(apiUrl)
-    .then(response => {
-      if (!response.ok) throw new Error('Errore nella risposta API');
-      return response.json();
-    })
-    .then(json => {
-      const rate = json.conversion_rates[toCurrency];
-      if (!rate) return;
-
-      const converted = (amount * rate).toFixed(2); // Moltiplica l’importo originale per il tasso di cambio e arrotonda a due decimali.
-      const newSymbol = symbols[toCurrency] || toCurrency;  //Cerca il simbolo associato al codice valuta scelto, se non trovato -> fallback 
-      priceElement.textContent = `${converted} ${newSymbol}`;
-    })
-    .catch(error => {
-      console.error('Errore:', error);
-    });
-});
+    // Chiamata al file PHP per la conversione
+    fetch(`convert_currency.php?from=${fromCurrency}&to=${toCurrency}&amount=${amount}`)
+      .then(response => {
+        if (!response.ok) throw new Error('Errore nella richiesta al server PHP');
+        return response.json();
+      })
+      .then(data => {
+        if (data.error) throw new Error(data.error);
+        const converted = parseFloat(data.converted).toFixed(2);
+        const newSymbol = symbols[toCurrency] || toCurrency;
+        priceElement.textContent = `${converted} ${newSymbol}`;
+      })
+      .catch(error => {
+        console.error('Errore:', error);
+      });
+  });
 }
 /* API TRADUZIONE */
 const selector = document.getElementById('language-selector');
