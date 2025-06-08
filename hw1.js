@@ -203,52 +203,53 @@ function updateExchangeRates(toCurrency) {
       });
   });
 }
-/* API TRADUZIONE */
 const selector = document.getElementById('language-selector');
 const menuTraslate = document.getElementById('language-menu');
 const languageSelect = document.getElementById('language');
 
 // Mostra/nasconde il menu a tendina
 selector.addEventListener('click', () => {
-menuTraslate.classList.toggle('hidden');
+  menuTraslate.classList.toggle('hidden');
 });
 
 // Traduzione al cambio lingua
 languageSelect.addEventListener('change', () => {
   const selectedLang = languageSelect.value;
 
-  // Seleziona solo tag specifici per la traduzione    
-  const elements = document.querySelectorAll('#linksLEFT a, #gender-tabs a, .menu-content li, #linksRIGHT a, #search-text, .box-text h1, .product-text, .text_wrapper a, .gtl-text-container p, .cta-button, .suggested-text h2, .suggested-product h3, .spam-conto h2, .spam-conto p, .spam-conto a, .footer-container h3, .footer-container #traslate, .footer-container .small-text, .footer-container a, .modal-title, #facebook-access, .privacy-text, .login-options .traslate, .login-submit .traslate, .signup-link, .cart-header h2, .favorites-btn .traslate, .cart-empty-content h3, .cart-empty-content p, .cart-empty-content .discover-btn, .nav-menu a, .top-search-tag .traslate, .top-search-suggest h3, .product-name, .search-input-page'); //continua side page
+  // Seleziona solo i tag da tradurre
+  const elements = document.querySelectorAll(
+    '#linksLEFT a, #gender-tabs a, .menu-content li, #linksRIGHT a, #search-text, .box-text h1, .product-text, .text_wrapper a, .gtl-text-container p, .cta-button, .suggested-text h2, .suggested-product h3, .spam-conto h2, .spam-conto p, .spam-conto a, .footer-container h3, .footer-container #traslate, .footer-container .small-text, .footer-container a, .modal-title, #facebook-access, .privacy-text, .login-options .traslate, .login-submit .traslate, .signup-link, .cart-header h2, .favorites-btn .traslate, .cart-empty-content h3, .cart-empty-content p, .cart-empty-content .discover-btn, .nav-menu a, .top-search-tag .traslate, .top-search-suggest h3, .product-name, .search-input-page'
+  );
 
   elements.forEach(el => {
-      const originalText = el.textContent.trim();
+    const originalText = el.textContent.trim();
+    if (!originalText) return;
 
-      // Ignora gli elementi vuoti
-      if (!originalText) return;
+    // Salva testo originale solo una volta
+    if (!el.dataset.original) {
+      el.dataset.original = originalText;
+    }
 
-      // Salva il testo originale se non è già stato salvato
-      if (!el.dataset.original) {
-          el.dataset.original = originalText;
-      }
+    // Se torna a italiano, ripristina
+    if (selectedLang === 'it') {
+      el.textContent = el.dataset.original;
+      return;
+    }
 
-      // Se la lingua selezionata è l'italiano, ripristina il testo originale
-      if (selectedLang === 'it') {
-          el.textContent = el.dataset.original;
-          return;
-      }
-
-      // Fetch la traduzione
-      fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(originalText)}&langpair=it|${selectedLang}`)
-          .then(res => res.json())
-          .then(data => {
-              el.textContent = data.responseData.translatedText;
-          })
-          .catch(err => {
-              console.error('Errore nella traduzione:', err);
-          });
+    // Chiama PHP per tradurre
+    fetch(`translate.php?text=${encodeURIComponent(originalText)}&to=${selectedLang}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.responseData && data.responseData.translatedText) {
+          el.textContent = data.responseData.translatedText;
+        }
+      })
+      .catch(err => {
+        console.error('Errore nella traduzione:', err);
+      });
   });
 
-  // Chiudi il menu dopo la selezione
+  // Chiude il menu
   menuTraslate.classList.add('hidden');
 });
 
