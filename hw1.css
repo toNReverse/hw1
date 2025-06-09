@@ -1307,7 +1307,7 @@ form input[type="password"]{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 20px 10px 150px 20px;
+  margin: 20px 10px 10px 20px;
 }
 
 .cart-header h3 {
@@ -1338,7 +1338,7 @@ line-height: 1;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-top: 40px;
+  margin-top: 140px;
   padding: 0 20px;
 }
 
@@ -1955,4 +1955,46 @@ cursor: pointer;
 
 .cart-action-buttons a:hover {
   background-color: #333;
+}
+.cart-items {
+  padding: 0 16px;
+  margin-top: 10px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.cart-item-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 14px;
+}
+
+.cart-item-info {
+  flex-grow: 1;
+}
+
+.cart-item-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.cart-item-price {
+  color: #888;
+  font-weight: 500;
+}
+
+.remove-cart-item-btn {
+  background: none;
+  border: none;
+  color: red;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 10px;
 }
