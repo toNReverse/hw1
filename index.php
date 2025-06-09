@@ -10,7 +10,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="hw1.css">
   <script src="hw1.js" defer></script>
+  <script src="cart-modal.js" defer></script>
 
+  
   <title>Bershka Uomo | Novità e Tendenze 2025</title>
 </head>
 <body>
@@ -90,28 +92,32 @@
         <a>Carrello</a>
       </div>
     </nav>
-  <div id="cart-modal" class="modal hidden">
-    <div class="model cart-empty">
-      <button class="close-btn-cart" aria-label="Chiudi carrello">&times;</button>
+<div id="cart-modal" class="modal hidden">
+  <div class="model">
+    <button class="close-btn-cart" aria-label="Chiudi carrello">&times;</button>
 
-      <div class="cart-header">
-        <h2>Carrello</h2>
-        <div class="cart-actions">
-          <a href="wish-list.php" class="favorites-btn">
-            <span class="icon"><img src="./img/heart-icon.png" alt="cuoricino"></span> 
-            <span class="traslate">Preferiti</span>
-          </a>
-        </div>
-      </div>
-      
-      <div class="cart-empty-content">
-        <img src="img/nobg.png" alt="Cuore spezzato" class="broken-heart" />
-        <h3>Carrello vuoto</h3>
-        <p>Non hai ancora nessun articolo nel carrello: scopri tutto quello che abbiamo in serbo per te</p>
-        <a href="wish-list.php" class="discover-btn">VAI AI PREFERITI</a>
+    <div class="cart-header">
+      <h2>Carrello</h2>
+      <div class="cart-actions">
+        <a href="wish-list.php" class="favorites-btn">
+          <span class="icon"><img src="./img/heart-icon.png" alt="cuoricino"></span> 
+          <span class="traslate">Preferiti</span>
+        </a>
       </div>
     </div>
+
+    <!-- Contenitore prodotti -->
+    <div class="cart-items hidden" id="cart-items-container"></div>
+
+    <!-- Stato carrello vuoto -->
+    <div class="cart-empty-content" id="cart-empty-content">
+      <img src="img/nobg.png" alt="Cuore spezzato" class="broken-heart" />
+      <h3>Carrello vuoto</h3>
+      <p>Non hai ancora nessun articolo nel carrello: scopri tutto quello che abbiamo in serbo per te</p>
+      <a href="wish-list.php" class="discover-btn">VAI AI PREFERITI</a>
+    </div>
   </div>
+</div>
   <!-- MENU API CONVERSIONE VALUTA-->
   <div id="currency-selector">💱</div>
   <div id="currency-menu" class="hidden">

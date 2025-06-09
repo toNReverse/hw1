@@ -1873,3 +1873,86 @@ cursor: pointer;
 .error-message.visible {
   display: block;
 }
+/* CART BTN */
+.cart-btn {
+  background-color: green;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 50%;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 8px;
+  text-decoration: none;
+  top: 5px;
+  left: 5px;
+}
+
+/* Container dei prodotti nel carrello */
+.cart-products-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+  padding: 0 10px;
+}
+
+/* Card del prodotto */
+.cart-product-card {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 10px;
+  background-color: #fafafa;
+}
+
+/* Immagine del prodotto */
+.cart-product-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 12px;
+}
+
+/* Informazioni del prodotto */
+.cart-product-info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cart-product-title {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.cart-product-price {
+  font-size: 13px;
+  color: #555;
+}
+
+/* Pulsanti + e - */
+.cart-action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cart-action-buttons a {
+  display: inline-block;
+  padding: 4px 10px;
+  background-color: black;
+  color: white;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.cart-action-buttons a:hover {
+  background-color: #333;
+}

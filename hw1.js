@@ -321,21 +321,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // HTML della card, incluso il cuoricino preferito
                 card.innerHTML = `
-                  <img class="product-image" src="${item.thumbnail}" alt="${item.title}">
-                  <div class="product-info">
-                    <div class="left-info">
-                      <p class="product-name">${item.title}</p>
-                      <div class="price-line">
-                        <span class="product-price">${item.extracted_price ? item.extracted_price.toFixed(2) + " €" : ""}</span>
-                        ${item.discount ? `<span class="discount">${item.discount}</span>` : ""}
-                      </div>
-                      ${item.previous_price ? `<p class="price-old">${item.previous_price.toFixed(2)} €</p>` : ""}
+                <img class="product-image" src="${item.thumbnail}" alt="${item.title}">
+                <div class="product-info">
+                  <div class="left-info">
+                    <p class="product-name">${item.title}</p>
+                    <div class="price-line">
+                      <span class="product-price">${item.extracted_price ? item.extracted_price.toFixed(2) + " €" : ""}</span>
+                      ${item.discount ? `<span class="discount">${item.discount}</span>` : ""}
                     </div>
-                    <div class="right-icon">
-                      <img class="fav-icon" src="${isFav ? 'img/filled-hearth-search-page.png' : 'img/hearth-search-page.png'}" alt="cuoricino">
-                    </div>
+                    ${item.previous_price ? `<p class="price-old">${item.previous_price.toFixed(2)} €</p>` : ""}
                   </div>
-                `;
+                  <div class="right-icon">
+                    <img class="fav-icon" src="${isFav ? 'img/filled-hearth-search-page.png' : 'img/hearth-search-page.png'}" alt="cuoricino">
+                    <a class="cart-btn" data-title="${item.title}" data-thumbnail="${item.thumbnail}" data-price="${item.extracted_price || 0}">+</a>
+                  </div>
+                </div>
+              `;
 
                 // Aggiunge la card al contenitore dei risultati
                 resultsContainer.appendChild(card);
@@ -404,5 +405,51 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(() => alert("Errore nel salvataggio"));
   }
+  document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("cart-btn")) {
+      const btn = e.target;
+      const isInCart = btn.textContent === "-";
+  
+      const title = btn.dataset.title;
+      const thumbnail = btn.dataset.thumbnail;
+      const price = btn.dataset.price;
+  
+      if (isInCart) {
+        // Rimuove dal carrello
+        fetch("remove-from-cart.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.ok) {
+            btn.textContent = "+";
+          } else {
+            alert("Errore nella rimozione dal carrello");
+          }
+        });
+      } else {
+        // Aggiunge al carrello
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("thumbnail", thumbnail);
+        formData.append("price", price);
+  
+        fetch("add-to-cart.php", {
+          method: "POST",
+          body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.ok) {
+            btn.textContent = "-";
+          } else {
+            alert("Errore nell'aggiunta al carrello");
+          }
+        });
+      }
+    }
+  });
 
 });
