@@ -27,6 +27,8 @@ if (!$isLoggedIn) {
     <link rel="stylesheet" href="profile.css">
     <link rel="stylesheet" href="hw1.css">
     <script src="hw1.js" defer></script>
+    <script src="cart-modal.js" defer></script>
+
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -111,7 +113,7 @@ if (!$isLoggedIn) {
     <!-- SIDE PAGE (ACCEDI, CARRELLO) **RIMOSSA**-->
   
     <div id="cart-modal" class="modal hidden">
-      <div class="model cart-empty">
+      <div class="model">
         <button class="close-btn-cart" aria-label="Chiudi carrello">&times;</button>
 
         <div class="cart-header">
@@ -123,8 +125,12 @@ if (!$isLoggedIn) {
             </a>
           </div>
         </div>
-      
-        <div class="cart-empty-content">
+
+        <!-- Contenitore prodotti -->
+        <div class="cart-items hidden" id="cart-items-container"></div>
+
+        <!-- Stato carrello vuoto -->
+        <div class="cart-empty-content" id="cart-empty-content">
           <img src="img/nobg.png" alt="Cuore spezzato" class="broken-heart" />
           <h3>Carrello vuoto</h3>
           <p>Non hai ancora nessun articolo nel carrello: scopri tutto quello che abbiamo in serbo per te</p>

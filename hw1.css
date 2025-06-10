@@ -1959,6 +1959,7 @@ cursor: pointer;
 .cart-items {
   padding: 0 16px;
   margin-top: 10px;
+  cursor: pointer;
 }
 
 .cart-item {
