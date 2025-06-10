@@ -257,28 +257,20 @@ if (languageSelect) {
     }
   });
 }
-
 // === SEARCH PAGE ===
 document.addEventListener("DOMContentLoaded", () => {
-  // Recupera l'input di ricerca (può avere classi/ID diversi in base alla pagina)
   const input = document.querySelector(".search-input-page") || document.getElementById("search-input-products");
-
-  // Contenitore dei risultati di ricerca (anche qui supporta due pagine diverse)
   const resultsContainer = document.querySelector("#results") || document.getElementById("results-products");
-
-  // Sezioni opzionali per i suggerimenti visivi da mostrare o nascondere
   const suggestSection = document.querySelector(".top-search-suggest") || document.querySelector(".suggest-section");
   const suggestTitle = document.querySelector(".search-suggest-text") || document.querySelector(".suggest-title");
   const topSearchTags = document.querySelector(".top-search") || document.querySelector(".top-search-tags");
 
-  let timeout = null; // Timer per il debounce (evita troppe richieste in tempo reale)
+  let timeout = null;
 
-  // Listener sull'input di ricerca
   input?.addEventListener("input", () => {
-    clearTimeout(timeout); // Annulla il timer precedente
-    const query = input.value.trim(); // Rimuove spazi extra dalla query
+    clearTimeout(timeout);
+    const query = input.value.trim();
 
-    // Se la query è troppo corta, ripristina i suggerimenti e termina
     if (query.length < 3) {
       resultsContainer.innerHTML = "";
       if (suggestSection) suggestSection.style.display = "block";
@@ -287,40 +279,34 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Attende 500ms prima di eseguire la ricerca (debounce)
     timeout = setTimeout(() => {
-      fetch(`search_content.php?q=${encodeURIComponent(query)}`) // Richiesta alla ricerca
+      fetch(`search_content.php?q=${encodeURIComponent(query)}`)
         .then(res => res.json())
         .then(data => {
-          resultsContainer.innerHTML = ""; // Svuota i risultati precedenti
-
-          // Nasconde i suggerimenti
+          resultsContainer.innerHTML = "";
           if (suggestSection) suggestSection.style.display = "none";
           if (suggestTitle) suggestTitle.style.display = "none";
           if (topSearchTags) topSearchTags.style.display = "none";
 
-          // Se non ci sono risultati, mostra un messaggio
           if (!data.shopping_results || data.shopping_results.length === 0) {
             resultsContainer.innerHTML = "<p>Nessun risultato trovato.</p>";
             return;
           }
 
-          // Recupera i prodotti già nei preferiti
-          fetch("fetch-product.php")
-            .then(res => res.json())
-            .then(favorites => {
-              // Per ogni risultato della ricerca
-              data.shopping_results.forEach(item => {
-                // Verifica se l'articolo è già nei preferiti
-                const isFav = favorites.some(fav => fav.title === item.title);
+          // Recupera preferiti e carrello in parallelo
+          Promise.all([
+            fetch("fetch-product.php").then(res => res.json()),
+            fetch("fetch-cart.php").then(res => res.json())
+          ]).then(([favorites, cartItems]) => {
+            data.shopping_results.forEach(item => {
+              const isFav = favorites.some(fav => fav.title === item.title);
+              const isInCart = cartItems.some(cart => cart.title === item.title);
 
-                // Crea la card HTML del prodotto
-                const card = document.createElement("div");
-                card.className = "product-card p-c-search";
-                card.dataset.item = JSON.stringify(item); // Salva i dati per uso futuro
+              const card = document.createElement("div");
+              card.className = "product-card p-c-search";
+              card.dataset.item = JSON.stringify(item);
 
-                // HTML della card, incluso il cuoricino preferito
-                card.innerHTML = `
+              card.innerHTML = `
                 <img class="product-image" src="${item.thumbnail}" alt="${item.title}">
                 <div class="product-info">
                   <div class="left-info">
@@ -333,39 +319,37 @@ document.addEventListener("DOMContentLoaded", () => {
                   </div>
                   <div class="right-icon">
                     <img class="fav-icon" src="${isFav ? 'img/filled-hearth-search-page.png' : 'img/hearth-search-page.png'}" alt="cuoricino">
-                    <a class="cart-btn" data-title="${item.title}" data-thumbnail="${item.thumbnail}" data-price="${item.extracted_price || 0}">+</a>
+                    <a class="cart-btn" data-title="${item.title}" data-thumbnail="${item.thumbnail}" data-price="${item.extracted_price || 0}">
+                      ${isInCart ? "-" : "+"}
+                    </a>
                   </div>
                 </div>
               `;
 
-                // Aggiunge la card al contenitore dei risultati
-                resultsContainer.appendChild(card);
-              });
+              resultsContainer.appendChild(card);
             });
+          });
         })
         .catch(err => {
           console.error("Errore nella ricerca:", err);
           resultsContainer.innerHTML = "<p>Errore nel caricamento dei risultati.</p>";
         });
-    }, 500); // 500ms di attesa dopo l’ultimo input
+    }, 500);
   });
 
-  // === Toggle preferito al click sul cuoricino nei risultati ===
+  // === Preferiti: toggle cuoricino ===
   document.addEventListener("click", (e) => {
-    // Verifica se il click è avvenuto su un'icona "fav-icon"
     if (e.target.classList.contains("fav-icon")) {
-      const card = e.target.closest(".product-card"); // Trova la card corrispondente
-      const item = JSON.parse(card.dataset.item); // Recupera i dati del prodotto
+      const card = e.target.closest(".product-card");
+      const item = JSON.parse(card.dataset.item);
 
       const isFavorite = e.target.src.includes("filled-hearth-search-page.png");
 
       if (isFavorite) {
-        // Se era già nei preferiti, lo rimuove
         removeFavorite(item.id);
         e.target.src = "img/hearth-search-page.png";
         e.target.title = "Aggiungi ai preferiti";
       } else {
-        // Altrimenti lo salva nei preferiti
         saveProduct(item);
         e.target.src = "img/filled-hearth-search-page.png";
         e.target.title = "Rimuovi dai preferiti";
@@ -373,7 +357,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // === Funzione per rimuovere un preferito dal database ===
   function removeFavorite(id) {
     fetch("remove-product.php", {
       method: "POST",
@@ -387,7 +370,6 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch(() => alert("Errore nella rimozione"));
   }
 
-  // === Funzione per salvare un prodotto nei preferiti ===
   function saveProduct(product) {
     const formData = new FormData();
     formData.append("title", product.title || "");
@@ -405,17 +387,18 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(() => alert("Errore nel salvataggio"));
   }
+
+  // === Carrello: toggle +/− ===
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("cart-btn")) {
       const btn = e.target;
-      const isInCart = btn.textContent === "-";
-  
+      const isInCart = btn.textContent.trim() === "-";
+
       const title = btn.dataset.title;
       const thumbnail = btn.dataset.thumbnail;
       const price = btn.dataset.price;
-  
+
       if (isInCart) {
-        // Rimuove dal carrello
         fetch("remove-from-cart.php", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -430,12 +413,11 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         });
       } else {
-        // Aggiunge al carrello
         const formData = new FormData();
         formData.append("title", title);
         formData.append("thumbnail", thumbnail);
         formData.append("price", price);
-  
+
         fetch("add-to-cart.php", {
           method: "POST",
           body: formData
@@ -443,7 +425,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(res => res.json())
         .then(data => {
           if (data.ok) {
-            btn.textContent = " - ";
+            btn.textContent = "-";
           } else {
             alert("Errore nell'aggiunta al carrello");
           }
@@ -451,5 +433,4 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   });
-
 });
