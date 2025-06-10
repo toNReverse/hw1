@@ -316,7 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Crea la card HTML del prodotto
                 const card = document.createElement("div");
-                card.className = "product-card";
+                card.className = "product-card p-c-search";
                 card.dataset.item = JSON.stringify(item); // Salva i dati per uso futuro
 
                 // HTML della card, incluso il cuoricino preferito
@@ -443,7 +443,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(res => res.json())
         .then(data => {
           if (data.ok) {
-            btn.textContent = "-";
+            btn.textContent = " - ";
           } else {
             alert("Errore nell'aggiunta al carrello");
           }
